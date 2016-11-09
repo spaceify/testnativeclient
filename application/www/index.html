@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Test Native Application client</title>
+	<meta name="description" content="">
+	<meta name="author" content="Spaceify Oy">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="fonts/roboto/roboto.css">
+	<link rel="stylesheet" href="css/skeleton/normalize.css">
+	<link rel="stylesheet" href="css/skeleton/skeleton.css">
+	<link rel="stylesheet" href="css/index.css">
+	<!-- <link rel="icon" type="image/png" href="images/favicon.png"> -->
+	<script src="http://edge.spaceify.net/js/spaceify.app.jquery.js"></script>
+
+	<script type="text/javascript">
+		var spaceify = null;
+		var testNativeClient = null;
+		var testnativeService = null;
+		
+
+			// DOM AND EVENTS -- -- -- -- -- -- -- -- -- -- //
+		window.addEventListener("load", function()
+			{
+			spaceify = new SpaceifyApplication();
+
+			testNativeClient = new TestNativeClient();
+			spaceify.start(testNativeClient, "testnative");
+			});
+
+			// TestNativeClient -- -- -- -- -- -- -- -- -- -- //
+		function TestNativeClient()
+			{
+			var self = this;
+
+			var timeOut = null;
+			var contentType = "";
+
+			// Called by spaceify init on success. Function needs to be named exactly like this. 
+			
+			self.start = function()
+				{
+					testnativeService = spaceify.getRequiredService("testnative");
+
+					testnativeService.callRpc("getRand",[], self, function(err , data)
+						{
+						console.log("getRand Rpc call returned "+err+", "+data);
+	                    });
+
+				};
+
+			// Called by spaceify init on success. Function needs to be named exactly like this. 
+
+			self.fail = function()
+				{
+				};
+				
+				// CONNECTION LISTENERS -- -- -- -- -- -- -- -- -- -- //
+			var connectionListener = function(connectionId)
+				{
+				showMessage("Connected to the testnative.");
+				};
+
+			var disconnectionListener = function(connectionId)
+				{
+				showMessage("No connection to the testnative.");
+				};
+
+				// EXPOSED RPC METHODS -- -- -- -- -- -- -- -- -- -- //
+
+
+				// -- -- -- -- -- -- -- -- -- -- //
+
+			var showMessage = function(errstr)
+				{
+				$("#message_div").empty().append($.parseHTML(errstr)).show();
+
+				if(timeOut != null)
+					clearTimeout(timeOut);
+
+				timeOut = setTimeout(function()
+					{
+					timeOut = null;
+					$("#message_div").hide();
+					}, 5000);
+
+				console.log(errstr);
+				};
+			}
+
+			self.ping = function() {
+				self.testnativeService.callRpc("getRand",[], self, function(err , data)
+					{
+					console.log("getRand Rpc call returned "+err+", "+data);
+					var value = 123;
+					console.log(value);
+					document.getElementById('result').innerHTML = value;
+                    });
+			};
+	</script>
+</head>
+<body>
+
+
+  <div class="container">
+    <div class="row">
+      <div class="one-half column" style="margin-top: 10%">
+
+		<div id="message_div" class="messagediv"></div>
+
+		<h4>Test Native Application client UI</h4>
+
+		<button onclick="ping()">Ping random()</button>
+		<div id="result"></div>
+
+		<p style="margin-top: 2em;">No options to configure yet.</p>
+
+      </div>
+    </div>
+  </div>
+
+
+</body>
+</html>

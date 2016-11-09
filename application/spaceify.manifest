@@ -1,0 +1,35 @@
+{
+  "provides_services": [
+  ],
+  "requires_services": [
+    {
+      "suggested_application": "testnative",
+      "service_name": "spaceify.org/services/testnative"
+    }
+  ],
+
+  "name": "Test Native Application client",
+  "unique_name": "spaceify/testnativeclient",
+  "version": "0.0.1",
+  "type": "sandboxed",
+  "category": "driver",
+  "start_command": "node testnative-client",
+  "developer": {
+    "name": "Spaceify Oy",
+    "url": "http://spaceify.net",
+    "email": "admin@spaceify.net"
+  },
+  "short_description": "Simple test client for testnative provided service.",
+  "appstore_description": "Simple test client for testnative provided service.",
+  "license": "MIT",
+  "creation_date": "2016-11-09 17:00:00",
+  "implements": [
+    "WEB_SERVER"
+  ],
+  "images": [
+    {
+      "file": "icon.png"
+    }
+  ],
+  "unique_directory": "spaceify/testnativeclient/"
+}
