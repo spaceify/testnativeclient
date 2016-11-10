@@ -18,6 +18,9 @@
 		var spaceify = null;
 		var testNativeClient = null;
 		var testnativeService = null;
+		var uniqueName = "testnative";
+		//var serviceName = "spaceify.org/services/testnative";
+		var serviceName = "spaceify.org/services/testnative";
 		
 
 			// DOM AND EVENTS -- -- -- -- -- -- -- -- -- -- //
@@ -26,7 +29,7 @@
 			spaceify = new SpaceifyApplication();
 
 			testNativeClient = new TestNativeClient();
-			spaceify.start(testNativeClient, "testnative");
+			spaceify.start(testNativeClient, uniqueName);
 			});
 
 			// TestNativeClient -- -- -- -- -- -- -- -- -- -- //
@@ -41,30 +44,36 @@
 			
 			self.start = function()
 				{
-					testnativeService = spaceify.getRequiredService("testnative");
+					console.log("Starting to start...");
+					testnativeService = spaceify.getRequiredService(serviceName);
+					if (!testnativeService) {
+						console.log("testnativeService was "+testnativeService);
+					}
 
-					testnativeService.callRpc("getRand",[], self, function(err , data)
-						{
-						console.log("getRand Rpc call returned "+err+", "+data);
-	                    });
+					//testnativeService.callRpc("getRand",[], self, function(err , data)
+					//	{
+					//	console.log("getRand Rpc call returned "+err+", "+data);
+					//});
 
+					console.log("Started!");
 				};
 
 			// Called by spaceify init on success. Function needs to be named exactly like this. 
 
 			self.fail = function()
 				{
+					console.log("Failed! :(");
 				};
 				
 				// CONNECTION LISTENERS -- -- -- -- -- -- -- -- -- -- //
 			var connectionListener = function(connectionId)
 				{
-				showMessage("Connected to the testnative.");
+				showMessage("Connected to the "+uniqueName+".");
 				};
 
 			var disconnectionListener = function(connectionId)
 				{
-				showMessage("No connection to the testnative.");
+				showMessage("No connection to the "+uniqueName+".");
 				};
 
 				// EXPOSED RPC METHODS -- -- -- -- -- -- -- -- -- -- //
@@ -93,9 +102,7 @@
 				self.testnativeService.callRpc("getRand",[], self, function(err , data)
 					{
 					console.log("getRand Rpc call returned "+err+", "+data);
-					var value = 123;
-					console.log(value);
-					document.getElementById('result').innerHTML = value;
+					document.getElementById('result').innerHTML = 'You got '+data;
                     });
 			};
 	</script>
@@ -112,9 +119,8 @@
 		<h4>Test Native Application client UI</h4>
 
 		<button onclick="ping()">Ping random()</button>
-		<div id="result"></div>
 
-		<p style="margin-top: 2em;">No options to configure yet.</p>
+		<p id="result" style="margin-top: 2em;"></p>
 
       </div>
     </div>
