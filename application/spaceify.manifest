@@ -1,6 +1,4 @@
 {
-  "provides_services": [
-  ],
   "requires_services": [
     {
       "suggested_application": "testnative",
